@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ann's Portfolio | 書籍統整</title>
+    <title>Ann's Portfolio | 書籍編輯作品集</title>
     <style>
         /* --- 暖色系配色 --- */
         :root {
@@ -42,20 +42,23 @@
             font-weight: 500;
             font-size: 1.1rem;
         }
+        
+        /* 修改後的聯絡資訊區塊 */
         .social-links {
-            margin-top: 30px;
+            margin-top: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
         }
         .social-links a {
-            color: var(--secondary-text);
+            color: var(--primary-text); /* 改為深褐色 */
             text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
-            transition: color 0.3s;
-            border-bottom: 2px solid transparent;
+            border-bottom: 2px solid var(--accent-color); /* 底部加上粉色線條裝飾 */
+            padding-bottom: 2px;
+            transition: all 0.3s;
         }
         .social-links a:hover {
             color: var(--accent-color);
-            border-bottom: 2px solid var(--accent-color);
+            background-color: rgba(224, 175, 160, 0.1);
         }
 
         /* --- 網格容器 --- */
@@ -89,9 +92,9 @@
         .card-img-container {
             width: 100%;
             height: 0;
-            padding-bottom: 140%; /* 模擬書籍 1:1.4 比例 */
+            padding-bottom: 140%; 
             position: relative;
-            background-color: #eaddcf; /* 預設底色 */
+            background-color: #eaddcf; 
             overflow: hidden;
         }
         .card-img {
@@ -130,6 +133,87 @@
             font-size: 0.9rem;
             color: var(--secondary-text);
             margin-top: auto;
+        }
+
+        /* --- 浮動導航按鈕 (New) --- */
+        .fab-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column-reverse; /* 讓選單向上展開 */
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        /* 主按鈕 (Menu) */
+        .fab-main {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-text);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s;
+            font-size: 1.5rem;
+        }
+        .fab-main:hover {
+            transform: scale(1.1);
+            background-color: var(--accent-color);
+        }
+
+        /* 子按鈕 (隱藏/顯示) */
+        .fab-item {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            opacity: 0; /* 預設隱藏 */
+            transform: translateY(20px);
+            pointer-events: none; /* 隱藏時不可點擊 */
+            transition: all 0.3s ease;
+        }
+        
+        /* 標籤文字 */
+        .fab-label {
+            background-color: #fff;
+            color: var(--primary-text);
+            padding: 5px 12px;
+            border-radius: 4px;
+            margin-right: 10px;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            font-weight: bold;
+        }
+        
+        /* 圓形小按鈕 */
+        .fab-btn {
+            width: 50px;
+            height: 50px;
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            font-size: 1.2rem;
+            border: 2px solid var(--primary-text);
+        }
+        .fab-btn:hover {
+            background-color: var(--primary-text);
+            color: #fff;
+        }
+
+        /* 滑鼠移入容器時顯示子按鈕 */
+        .fab-container:hover .fab-item {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
         }
 
         /* --- 燈箱 (Modal) --- */
@@ -227,12 +311,10 @@
 <body>
 
     <header>
-        <h1>Portfolio</h1>
-        <p>書籍統整</p>
-        <p>——專注細節，傳遞溫暖——</p>
+        <h1>Ann's Portfolio</h1>
+        <p>書籍編輯作品集 | 專注細節，傳遞溫度</p>
         <div class="social-links">
-            <a href="mailto:annchen1836@gmail.com">Email</a>
-            <a href="#">LinkedIn</a>
+            Email：<a href="mailto:tyannachen999@gmail.com">tyannachen999@gmail.com</a>
         </div>
     </header>
 
@@ -240,11 +322,22 @@
         <div class="grid" id="book-grid"></div>
     </main>
 
+    <div class="fab-container">
+        <a href="copy.html" class="fab-item">
+            <span class="fab-label">文案作品</span>
+            <div class="fab-btn">✍️</div>
+        </a>
+        <a href="index.html" class="fab-item">
+            <span class="fab-label">回首頁</span>
+            <div class="fab-btn">🏠</div>
+        </a>
+        <div class="fab-main">≡</div>
+    </div>
+
     <div id="modal-overlay" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
-            <div class="detail-grid" id="modal-body">
-                </div>
+            <div class="detail-grid" id="modal-body"></div>
         </div>
     </div>
 
@@ -253,7 +346,7 @@
     </footer>
 
     <script>
-        // --- 書籍資料庫 (最新在最上) ---
+        // --- 書籍資料庫 ---
         const books = [
             { title: "嗅覺覺醒", role: "責任編輯", author: "齊藤帆乃花", translator: "鄭秉慈", pages: "189", status: "執行中", link: "#", image: "", note: "" },
             { title: "見個面，說說話", role: "責任編輯", author: "田中泰延", translator: "胡毓華", pages: "265", status: "執行中", link: "#", image: "", note: "" },
@@ -325,10 +418,8 @@
         function renderBooks() {
             grid.innerHTML = '';
             books.forEach((book, index) => {
-                // 1. 產生卡片 HTML
                 const card = document.createElement('div');
                 card.className = 'card';
-                // 使用假圖服務，若您填入真實圖片路徑則顯示您的圖
                 const imgUrl = book.image ? book.image : `https://placehold.co/400x560/eaddcf/463f3a?text=${encodeURIComponent(book.title.substring(0,4))}`;
                 
                 card.innerHTML = `
@@ -351,7 +442,6 @@
             const book = books[index];
             const imgUrl = book.image ? book.image : `https://placehold.co/400x560/eaddcf/463f3a?text=${encodeURIComponent(book.title.substring(0,4))}`;
             
-            // 處理空值顯示
             const noteHtml = book.note ? `<p><strong>備註：</strong>${book.note}</p>` : '';
             const linkHtml = book.link && book.link !== '#' ? `<a href="${book.link}" target="_blank" class="action-btn">查看博客來頁面 ➜</a>` : '';
 
@@ -388,14 +478,12 @@
             document.body.style.overflow = 'auto';
         }
 
-        // 點擊背景關閉
         window.onclick = function(event) {
             if (event.target == modal) {
                 closeModal();
             }
         }
 
-        // 初始化
         renderBooks();
     </script>
 </body>
