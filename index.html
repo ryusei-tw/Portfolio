@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>編輯作品集 | Your Name</title>
+    <style>
+        /* --- 基礎設定 --- */
+        :root {
+            --primary-color: #2c3e50; /* 深藍色主調 */
+            --accent-color: #e67e22;  /* 亮橘色點綴 */
+            --bg-color: #f8f9fa;      /* 淺灰背景 */
+            --card-bg: #ffffff;
+        }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* --- 頁首區塊 --- */
+        header {
+            background-color: var(--card-bg);
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        header h1 {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 2.5rem;
+        }
+        header p {
+            color: #666;
+            margin-top: 10px;
+        }
+        .social-links {
+            margin-top: 20px;
+        }
+        .social-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        /* --- 作品櫥窗網格 (核心) --- */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        /* 這裡設定 RWD 網格：自動適應寬度，最小 280px */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        /* --- 卡片設計 --- */
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden; /* 讓圖片圓角不跑出去 */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer; /* 讓滑鼠變手型 */
+        }
+        .card:hover {
+            transform: translateY(-5px); /* 滑鼠移上去浮起來 */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .card-img {
+            width: 100%;
+            height: 350px; /* 固定高度，讓版面整齊 */
+            object-fit: cover; /* 圖片自動裁切填滿，不變形 */
+            background-color: #eee;
+        }
+        .card-content {
+            padding: 20px;
+        }
+        .card-tag {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            margin: 5px 0 10px 0;
+            color: var(--primary-color);
+        }
+        .card-desc {
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        /* --- 燈箱 (點擊後彈出的詳細視窗) --- */
+        .modal {
+            display: none; /* 預設隱藏 */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8); /* 半透明黑底 */
+            overflow: auto;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 40px;
+            border-radius: 8px;
+            max-width: 700px;
+            width: 90%;
+            position: relative;
+            animation: fadeIn 0.4s;
+        }
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+        }
+        .close-btn:hover { color: #000; }
+        
+        /* 詳細頁面的排版 */
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+        @media (max-width: 600px) {
+            .detail-grid { grid-template-columns: 1fr; } /* 手機版變單欄 */
+        }
+        .detail-img {
+            width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(-20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        
+        /* 頁尾 */
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>王小明 | 書籍編輯作品集</h1>
+        <p>擅長人文社科與商業理財書籍企劃，致力於讓好內容被看見。</p>
+        <div class="social-links">
+            <a href="#">Email</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">Instagram</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="grid">
+            
+            <div class="card" onclick="openModal('book1')">
+                <img src="https://placehold.co/400x560/EEE/31343C?text=Book+Cover+1" alt="書籍封面" class="card-img">
+                <div class="card-content">
+                    <span class="card-tag">商業理財 · 策劃編輯</span>
+                    <h3 class="card-title">原子習慣實踐版</h3>
+                    <p class="card-desc">年度暢銷榜 Top 10，經手銷量突破 5 萬冊。</p>
+                </div>
+            </div>
+
+            <div class="card" onclick="openModal('book2')">
+                <img src="https://placehold.co/400x560/EEE/31343C?text=Book+Cover+2" alt="書籍封面" class="card-img">
+                <div class="card-content">
+                    <span class="card-tag">翻譯文學 · 潤飾校對</span>
+                    <h3 class="card-title">深夜的圖書館</h3>
+                    <p class="card-desc">協助翻譯風格定調，精修內文超過 15 萬字。</p>
+                </div>
+            </div>
+
+            <div class="card" onclick="openModal('book3')">
+                <img src="https://placehold.co/400x560/EEE/31343C?text=Book+Cover+3" alt="書籍封面" class="card-img">
+                <div class="card-content">
+                    <span class="card-tag">生活風格 · 專案統籌</span>
+                    <h3 class="card-title">日日好食光</h3>
+                    <p class="card-desc">從零企劃到出版，協調攝影、設計與作者三方溝通。</p>
+                </div>
+            </div>
+            
+            </div>
+    </main>
+
+    <footer>
+        &copy; 2026 王小明 Portfolio. All rights reserved.
+    </footer>
+
+    <div id="book1" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('book1')">&times;</span>
+            <div class="detail-grid">
+                <div>
+                    <img src="https://placehold.co/400x560/EEE/31343C?text=Book+Cover+1" alt="書籍封面" class="detail-img">
+                </div>
+                <div>
+                    <h2>原子習慣實踐版</h2>
+                    <p style="color:#666; margin-bottom: 20px;">作者：James Clear | 出版社：XX出版 | 2024</p>
+                    
+                    <h3>編輯觀點</h3>
+                    <p>這本書最大的挑戰在於如何將生硬的理論轉化為讀者可執行的步驟。我在編輯過程中，特別設計了隨書附贈的「實踐手冊」，並重新梳理了目錄結構，使其更符合台灣讀者的閱讀習慣。</p>
+                    
+                    <h3>專案成效</h3>
+                    <ul>
+                        <li>上市首週即登上博客來總榜第一名。</li>
+                        <li>社群轉發次數超過 1,000 次。</li>
+                        <li>獲得金石堂年度選書推薦。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="book2" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('book2')">&times;</span>
+            <div class="detail-grid">
+                <div>
+                    <img src="https://placehold.co/400x560/EEE/31343C?text=Book+Cover+2" alt="書籍封面" class="detail-img">
+                </div>
+                <div>
+                    <h2>深夜的圖書館</h2>
+                    <p style="color:#666; margin-bottom: 20px;">作者：Matt Haig | 出版社：XX出版 | 2023</p>
+                    <h3>編輯筆記</h3>
+                    <p>處理這本翻譯文學時，重點在於保留原著的幽默感同時兼顧中文的流暢度。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="book3" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('book3')">&times;</span>
+            <div class="detail-grid">
+                <div>
+                    <img src="https://placehold.co/400x560/EEE/31343C?text=Book+Cover+3" alt="書籍封面" class="detail-img">
+                </div>
+                <div>
+                    <h2>日日好食光</h2>
+                    <p style="color:#666; margin-bottom: 20px;">作者：食譜達人 | 出版社：XX出版 | 2022</p>
+                    <h3>專案細節</h3>
+                    <p>統籌攝影棚拍與食譜校對，確保 50 道料理步驟準確無誤。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 開啟視窗
+        function openModal(id) {
+            document.getElementById(id).style.display = "block";
+            document.body.style.overflow = "hidden"; // 防止背景滾動
+        }
+
+        // 關閉視窗
+        function closeModal(id) {
+            document.getElementById(id).style.display = "none";
+            document.body.style.overflow = "auto"; // 恢復背景滾動
+        }
+
+        // 點擊視窗外部也能關閉
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = "none";
+                document.body.style.overflow = "auto";
+            }
+        }
+    </script>
+</body>
+</html>
