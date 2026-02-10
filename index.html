@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ann's Portfolio | 文字工作者</title>
+    <title>安的作品集 | 文字工作者</title>
     <style>
-        /* --- 延續暖色系配色 --- */
+        /* --- 暖色系配色 --- */
         :root {
             --primary-text: #463f3a;  /* 深褐 */
             --secondary-text: #8a817c;/* 灰褐 */
@@ -21,11 +21,11 @@
             background-color: var(--bg-color);
             color: var(--primary-text);
             line-height: 1.7;
-            height: 100vh; /* 讓畫面佔滿整個螢幕高度 */
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* 垂直置中 */
-            align-items: center;     /* 水平置中 */
+            justify-content: center;
+            align-items: center;
         }
 
         /* --- 主要內容區 --- */
@@ -38,15 +38,29 @@
 
         h1 {
             font-size: 3.5rem;
-            margin: 0 0 20px 0;
-            letter-spacing: 3px;
+            margin: 0 0 15px 0;
+            letter-spacing: 5px;
+            color: var(--primary-text);
         }
         
         .subtitle {
             font-size: 1.2rem;
             color: var(--secondary-text);
-            margin-bottom: 50px;
+            margin-bottom: 20px;
             font-weight: 500;
+        }
+        
+        .home-contact {
+            display: inline-block;
+            margin-bottom: 40px;
+            color: var(--primary-text);
+            text-decoration: none;
+            border-bottom: 1px solid var(--accent-color);
+            padding-bottom: 2px;
+            transition: color 0.3s;
+        }
+        .home-contact:hover {
+            color: var(--accent-color);
         }
 
         /* --- 導航按鈕區 --- */
@@ -54,7 +68,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
-            margin-top: 40px;
+            margin-top: 10px;
         }
 
         .nav-card {
@@ -100,23 +114,14 @@
             color: var(--secondary-text);
         }
 
-        /* --- 頁尾聯絡資訊 --- */
-        .footer-contact {
+        /* --- 頁尾 --- */
+        .footer-copyright {
             position: absolute;
             bottom: 30px;
             text-align: center;
             width: 100%;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--secondary-text);
-        }
-        .footer-contact a {
-            color: var(--primary-text);
-            text-decoration: none;
-            margin: 0 10px;
-            border-bottom: 1px solid var(--accent-color);
-        }
-        .footer-contact a:hover {
-            color: var(--accent-color);
         }
 
         @keyframes fadeIn {
@@ -124,19 +129,20 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- 手機版調整 --- */
         @media (max-width: 600px) {
             h1 { font-size: 2.5rem; }
             .nav-grid { grid-template-columns: 1fr; }
-            .footer-contact { position: relative; margin-top: 50px; }
+            .footer-copyright { position: relative; margin-top: 50px; }
         }
     </style>
 </head>
 <body>
 
     <div class="intro-container">
-        <h1>Ann's Portfolio</h1>
+        <h1>安｜書籍・文案編輯</h1>
         <p class="subtitle">文字工作者 | 編輯・企劃・文案</p>
+        
+        <a href="mailto:tyannachen999@gmail.com" class="home-contact">tyannachen999@gmail.com</a>
 
         <div class="nav-grid">
             <a href="books.html" class="nav-card">
@@ -153,11 +159,9 @@
         </div>
     </div>
 
-    <div class="footer-contact">
-        <a href="mailto:tyannachen999@gmail.com">tyannachen999@gmail.com</a>
-        <span>|</span>
-        <a href="#">LinkedIn</a>
-    </div>
+    <footer class="footer-copyright">
+        &copy; 2026 Ann Portfolio. All rights reserved.
+    </footer>
 
 </body>
 </html>
