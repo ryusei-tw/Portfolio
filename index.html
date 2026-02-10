@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ann's Portfolio | 文字工作者</title>
+    <style>
+        /* --- 延續暖色系配色 --- */
+        :root {
+            --primary-text: #463f3a;  /* 深褐 */
+            --secondary-text: #8a817c;/* 灰褐 */
+            --accent-color: #e0afa0;  /* 柔粉 */
+            --bg-color: #f4f3ee;      /* 米白 */
+            --card-bg: #ffffff;       /* 純白 */
+        }
+        
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+            line-height: 1.7;
+            height: 100vh; /* 讓畫面佔滿整個螢幕高度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* 垂直置中 */
+            align-items: center;     /* 水平置中 */
+        }
+
+        /* --- 主要內容區 --- */
+        .intro-container {
+            text-align: center;
+            padding: 20px;
+            max-width: 800px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin: 0 0 20px 0;
+            letter-spacing: 3px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--secondary-text);
+            margin-bottom: 50px;
+            font-weight: 500;
+        }
+
+        /* --- 導航按鈕區 --- */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .nav-card {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--primary-text);
+            box-shadow: 0 4px 15px rgba(70, 63, 58, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 200px;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(70, 63, 58, 0.15);
+            border-color: var(--accent-color);
+        }
+
+        .nav-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary-text);
+            transition: color 0.3s;
+        }
+        
+        .nav-card:hover .nav-icon {
+            color: var(--accent-color);
+        }
+
+        .nav-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .nav-desc {
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+        }
+
+        /* --- 頁尾聯絡資訊 --- */
+        .footer-contact {
+            position: absolute;
+            bottom: 30px;
+            text-align: center;
+            width: 100%;
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+        }
+        .footer-contact a {
+            color: var(--primary-text);
+            text-decoration: none;
+            margin: 0 10px;
+            border-bottom: 1px solid var(--accent-color);
+        }
+        .footer-contact a:hover {
+            color: var(--accent-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- 手機版調整 --- */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5rem; }
+            .nav-grid { grid-template-columns: 1fr; }
+            .footer-contact { position: relative; margin-top: 50px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="intro-container">
+        <h1>Ann's Portfolio</h1>
+        <p class="subtitle">文字工作者 | 編輯・企劃・文案</p>
+
+        <div class="nav-grid">
+            <a href="books.html" class="nav-card">
+                <span class="nav-icon">📖</span>
+                <span class="nav-title">書籍編輯</span>
+                <span class="nav-desc">Book Editing & Planning</span>
+            </a>
+
+            <a href="copy.html" class="nav-card">
+                <span class="nav-icon">✍️</span>
+                <span class="nav-title">文案作品</span>
+                <span class="nav-desc">Copywriting & Content</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="footer-contact">
+        <a href="mailto:tyannachen999@gmail.com">tyannachen999@gmail.com</a>
+        <span>|</span>
+        <a href="#">LinkedIn</a>
+    </div>
+
+</body>
+</html>
