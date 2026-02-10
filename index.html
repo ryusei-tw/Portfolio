@@ -3,295 +3,421 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>編輯作品集 | Your Name</title>
+    <title>Ann's Portfolio | 書籍編輯作品集</title>
     <style>
-        /* --- 基礎設定 --- */
+        /* --- 暖色系配色 --- */
         :root {
-            --primary-color: #2c3e50; /* 深藍色主調 */
-            --accent-color: #e67e22;  /* 亮橘色點綴 */
-            --bg-color: #f8f9fa;      /* 淺灰背景 */
-            --card-bg: #ffffff;
+            --primary-text: #463f3a;  /* 深褐 */
+            --secondary-text: #8a817c;/* 灰褐 */
+            --accent-color: #e0afa0;  /* 柔粉 */
+            --bg-color: #f4f3ee;      /* 米白 */
+            --card-bg: #ffffff;       /* 純白 */
+            --border-color: #bcb8b1;  /* 淺灰褐 */
         }
+        
         body {
             font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft JhengHei", sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--bg-color);
-            color: #333;
-            line-height: 1.6;
+            color: var(--primary-text);
+            line-height: 1.7;
         }
 
-        /* --- 頁首區塊 --- */
+        /* --- 頁首 --- */
         header {
-            background-color: var(--card-bg);
-            padding: 40px 20px;
+            background-color: var(--bg-color);
+            padding: 80px 20px 60px;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         header h1 {
             margin: 0;
-            color: var(--primary-color);
-            font-size: 2.5rem;
+            color: var(--primary-text);
+            font-size: 2.8rem;
+            letter-spacing: 2px;
         }
         header p {
-            color: #666;
-            margin-top: 10px;
+            color: var(--secondary-text);
+            margin-top: 15px;
+            font-weight: 500;
+            font-size: 1.1rem;
         }
         .social-links {
-            margin-top: 20px;
+            margin-top: 30px;
         }
         .social-links a {
-            color: var(--primary-color);
+            color: var(--secondary-text);
             text-decoration: none;
-            margin: 0 10px;
+            margin: 0 15px;
             font-weight: bold;
+            transition: color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .social-links a:hover {
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
         }
 
-        /* --- 作品櫥窗網格 (核心) --- */
+        /* --- 篩選按鈕 (選用) --- */
+        .filter-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .filter-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--secondary-text);
+            padding: 8px 20px;
+            margin: 5px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-text);
+            color: #fff;
+            border-color: var(--primary-text);
+        }
+
+        /* --- 網格容器 --- */
         .container {
             max-width: 1200px;
-            margin: 40px auto;
+            margin: 0 auto 80px auto;
             padding: 0 20px;
         }
-        
-        /* 這裡設定 RWD 網格：自動適應寬度，最小 280px */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 40px;
         }
 
-        /* --- 卡片設計 --- */
+        /* --- 卡片樣式 --- */
         .card {
             background: var(--card-bg);
-            border-radius: 8px;
-            overflow: hidden; /* 讓圖片圓角不跑出去 */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(70, 63, 58, 0.08);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer; /* 讓滑鼠變手型 */
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         .card:hover {
-            transform: translateY(-5px); /* 滑鼠移上去浮起來 */
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(70, 63, 58, 0.15);
+        }
+        .card-img-container {
+            width: 100%;
+            height: 0;
+            padding-bottom: 140%; /* 模擬書籍 1:1.4 比例 */
+            position: relative;
+            background-color: #eaddcf; /* 預設底色 */
+            overflow: hidden;
         }
         .card-img {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 350px; /* 固定高度，讓版面整齊 */
-            object-fit: cover; /* 圖片自動裁切填滿，不變形 */
-            background-color: #eee;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(20%);
+            transition: filter 0.5s;
+        }
+        .card:hover .card-img {
+            filter: grayscale(0%);
         }
         .card-content {
             padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
         .card-tag {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--accent-color);
             font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-            display: block;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
         }
         .card-title {
-            font-size: 1.25rem;
-            margin: 5px 0 10px 0;
-            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin: 0 0 10px 0;
+            color: var(--primary-text);
+            line-height: 1.4;
         }
         .card-desc {
-            font-size: 0.95rem;
-            color: #666;
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+            margin-top: auto; /* 將這行推到底部 */
         }
 
-        /* --- 燈箱 (點擊後彈出的詳細視窗) --- */
+        /* --- 燈箱 (Modal) --- */
         .modal {
-            display: none; /* 預設隱藏 */
+            display: none;
             position: fixed;
-            z-index: 1000;
+            z-index: 999;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.8); /* 半透明黑底 */
-            overflow: auto;
-            backdrop-filter: blur(5px);
+            background-color: rgba(70, 63, 58, 0.95);
+            overflow-y: auto;
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .modal.show {
+            display: block;
+            opacity: 1;
         }
         .modal-content {
-            background-color: #fff;
+            background-color: var(--bg-color);
             margin: 5% auto;
-            padding: 40px;
+            padding: 50px;
             border-radius: 8px;
-            max-width: 700px;
+            max-width: 800px;
             width: 90%;
             position: relative;
-            animation: fadeIn 0.4s;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
         .close-btn {
             position: absolute;
-            top: 15px;
-            right: 20px;
+            top: 20px;
+            right: 30px;
             font-size: 2rem;
-            font-weight: bold;
-            color: #aaa;
+            color: var(--secondary-text);
             cursor: pointer;
+            transition: 0.3s;
         }
-        .close-btn:hover { color: #000; }
-        
-        /* 詳細頁面的排版 */
+        .close-btn:hover { color: var(--accent-color); }
+
         .detail-grid {
             display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 30px;
+            grid-template-columns: 250px 1fr;
+            gap: 50px;
+            align-items: start;
         }
-        @media (max-width: 600px) {
-            .detail-grid { grid-template-columns: 1fr; } /* 手機版變單欄 */
+        @media (max-width: 768px) {
+            .detail-grid { grid-template-columns: 1fr; gap: 30px; }
+            .modal-content { padding: 30px 20px; margin: 10% auto; }
         }
+        
         .detail-img {
             width: 100%;
             border-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            box-shadow: 10px 10px 30px rgba(0,0,0,0.15);
         }
-
-        @keyframes fadeIn {
-            from {opacity: 0; transform: translateY(-20px);}
-            to {opacity: 1; transform: translateY(0);}
+        .meta-info {
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+        .meta-info span {
+            margin-right: 15px;
+            display: inline-block;
         }
         
-        /* 頁尾 */
+        .action-btn {
+            display: inline-block;
+            background-color: var(--primary-text);
+            color: #fff;
+            padding: 10px 25px;
+            text-decoration: none;
+            border-radius: 30px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+        .action-btn:hover {
+            background-color: var(--accent-color);
+        }
+
         footer {
             text-align: center;
-            padding: 40px;
-            color: #888;
-            font-size: 0.9rem;
+            padding: 50px 20px;
+            color: var(--secondary-text);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>王小明 | 書籍編輯作品集</h1>
-        <p>擅長人文社科與商業理財書籍企劃，致力於讓好內容被看見。</p>
+        <h1>Ann's Portfolio</h1>
+        <p>書籍編輯作品集 | 專注細節，傳遞溫度</p>
         <div class="social-links">
-            <a href="#">Email</a>
+            <a href="mailto:annchen1836@gmail.com">Email</a>
             <a href="#">LinkedIn</a>
-            <a href="#">Instagram</a>
         </div>
     </header>
 
     <main class="container">
-        <div class="grid">
-            
-            <div class="card" onclick="openModal('book1')">
-                <img src="https://placehold.co/400x560/EEE/31343C?text=Book+Cover+1" alt="書籍封面" class="card-img">
-                <div class="card-content">
-                    <span class="card-tag">商業理財 · 策劃編輯</span>
-                    <h3 class="card-title">原子習慣實踐版</h3>
-                    <p class="card-desc">年度暢銷榜 Top 10，經手銷量突破 5 萬冊。</p>
-                </div>
-            </div>
-
-            <div class="card" onclick="openModal('book2')">
-                <img src="https://placehold.co/400x560/EEE/31343C?text=Book+Cover+2" alt="書籍封面" class="card-img">
-                <div class="card-content">
-                    <span class="card-tag">翻譯文學 · 潤飾校對</span>
-                    <h3 class="card-title">深夜的圖書館</h3>
-                    <p class="card-desc">協助翻譯風格定調，精修內文超過 15 萬字。</p>
-                </div>
-            </div>
-
-            <div class="card" onclick="openModal('book3')">
-                <img src="https://placehold.co/400x560/EEE/31343C?text=Book+Cover+3" alt="書籍封面" class="card-img">
-                <div class="card-content">
-                    <span class="card-tag">生活風格 · 專案統籌</span>
-                    <h3 class="card-title">日日好食光</h3>
-                    <p class="card-desc">從零企劃到出版，協調攝影、設計與作者三方溝通。</p>
-                </div>
-            </div>
-            
-            </div>
+        <div class="grid" id="book-grid"></div>
     </main>
 
+    <div id="modal-overlay" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div class="detail-grid" id="modal-body">
+                </div>
+        </div>
+    </div>
+
     <footer>
-        &copy; 2026 王小明 Portfolio. All rights reserved.
+        &copy; 2026 Ann Portfolio. All rights reserved.
     </footer>
 
-    <div id="book1" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('book1')">&times;</span>
-            <div class="detail-grid">
-                <div>
-                    <img src="https://placehold.co/400x560/EEE/31343C?text=Book+Cover+1" alt="書籍封面" class="detail-img">
-                </div>
-                <div>
-                    <h2>原子習慣實踐版</h2>
-                    <p style="color:#666; margin-bottom: 20px;">作者：James Clear | 出版社：XX出版 | 2024</p>
-                    
-                    <h3>編輯觀點</h3>
-                    <p>這本書最大的挑戰在於如何將生硬的理論轉化為讀者可執行的步驟。我在編輯過程中，特別設計了隨書附贈的「實踐手冊」，並重新梳理了目錄結構，使其更符合台灣讀者的閱讀習慣。</p>
-                    
-                    <h3>專案成效</h3>
-                    <ul>
-                        <li>上市首週即登上博客來總榜第一名。</li>
-                        <li>社群轉發次數超過 1,000 次。</li>
-                        <li>獲得金石堂年度選書推薦。</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="book2" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('book2')">&times;</span>
-            <div class="detail-grid">
-                <div>
-                    <img src="https://placehold.co/400x560/EEE/31343C?text=Book+Cover+2" alt="書籍封面" class="detail-img">
-                </div>
-                <div>
-                    <h2>深夜的圖書館</h2>
-                    <p style="color:#666; margin-bottom: 20px;">作者：Matt Haig | 出版社：XX出版 | 2023</p>
-                    <h3>編輯筆記</h3>
-                    <p>處理這本翻譯文學時，重點在於保留原著的幽默感同時兼顧中文的流暢度。</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="book3" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('book3')">&times;</span>
-            <div class="detail-grid">
-                <div>
-                    <img src="https://placehold.co/400x560/EEE/31343C?text=Book+Cover+3" alt="書籍封面" class="detail-img">
-                </div>
-                <div>
-                    <h2>日日好食光</h2>
-                    <p style="color:#666; margin-bottom: 20px;">作者：食譜達人 | 出版社：XX出版 | 2022</p>
-                    <h3>專案細節</h3>
-                    <p>統籌攝影棚拍與食譜校對，確保 50 道料理步驟準確無誤。</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // 開啟視窗
-        function openModal(id) {
-            document.getElementById(id).style.display = "block";
-            document.body.style.overflow = "hidden"; // 防止背景滾動
+        // --- 書籍資料庫 (請在此處修改圖片連結或文字) ---
+        // 注意：目前 image 都是空的，您可以填入 "images/檔名.jpg"
+        const books = [
+            { title: "難不成是失智症？輕度認知功能障礙仍有機會逆轉！", role: "責任編輯", author: "浦上克哉", translator: "胡毓華", pages: "235", status: "已出版", link: "https://www.books.com.tw/products/0011000840?sloc=main", image: "", note: "" },
+            { title: "7日飲食法：專科醫師教你「吃」掉脂肪肝", role: "責任編輯", author: "尾形哲", translator: "曾玟閎", pages: "127", status: "已出版", link: "https://www.books.com.tw/products/0011000846?sloc=main", image: "", note: "" },
+            { title: "極簡奧地利史", role: "責任編輯", author: "古田善文", translator: "蔡麗蓉", pages: "205", status: "已出版", link: "https://www.books.com.tw/products/0011000845?sloc=main", image: "", note: "" },
+            { title: "肝臟脂肪消除術！專科醫師教你輕鬆瘦", role: "責任編輯", author: "尾形哲", translator: "許郁文", pages: "239", status: "已出版", link: "https://www.books.com.tw/products/0011003417?loc=P_0004_118", image: "", note: "" },
+            { title: "腳踝貼紮可以改善坐骨神經痛？專科醫師的最新理論！", role: "責任編輯", author: "萩原祐介", translator: "李婉寧", pages: "159", status: "已出版", link: "https://www.books.com.tw/products/0011004109?sloc=main", image: "", note: "" },
+            { title: "圖解第二次世界大戰各國輕兵器", role: "責任編輯", author: "上田信", translator: "張詠翔", pages: "175", status: "已出版", link: "https://www.books.com.tw/products/0011004863?sloc=main", image: "", note: "" },
+            { title: "今天就要準時下班！運用聰明思考法改善瞎忙工作模式", role: "責任編輯", author: "田中豬夫", translator: "劉姍珊", pages: "223", status: "已出版", link: "https://www.books.com.tw/products/0011005827?sloc=main", image: "", note: "" },
+            { title: "誰說呼吸就會胖？醒著就能瘦的日常動作瘦身圖鑑", role: "責任編輯", author: "植森美緒", translator: "林宜薰", pages: "127", status: "已出版", link: "https://www.books.com.tw/products/0011006457?sloc=main", image: "", note: "" },
+            { title: "圖解中東戰爭", role: "責任編輯", author: "上田信", translator: "張詠翔", pages: "199", status: "已出版", link: "https://www.books.com.tw/products/0011005837?sloc=main", image: "", note: "" },
+            { title: "打造究極鋼彈機動模型超級技術指南", role: "校對", author: "林哲平", translator: "張詠翔", pages: "113", status: "已出版", link: "https://www.books.com.tw/products/0011006459?sloc=main", image: "", note: "" },
+            { title: "以愛料理，主廚的寵妻健康食堂", role: "校對", author: "林勃攸", translator: "/", pages: "175", status: "已出版", link: "https://www.books.com.tw/products/0011004762?sloc=main", image: "", note: "part1~part5 二校" },
+            { title: "32歲，一家四口用100萬環遊世界", role: "校對", author: "黃李婷萱", translator: "/", pages: "279", status: "已出版", link: "https://www.books.com.tw/products/0011007664?sloc=main", image: "", note: "全書二校" },
+            { title: "哪一個才正確？幸褔貓咪就要這樣養！", role: "責任編輯", author: "獸醫NYANTOS", translator: "邱佳葳", pages: "239", status: "已出版", link: "https://www.books.com.tw/products/0011008044?sloc=main", image: "", note: "" },
+            { title: "他怎麼那麼會講話？翻轉氣氛只需要3秒！", role: "責任編輯", author: "麻生Saika", translator: "胡毓華", pages: "253", status: "已出版", link: "https://www.books.com.tw/products/0011007966?sloc=main", image: "", note: "" },
+            { title: "野外生存圖解：掌握自然中的生存技能", role: "責任編輯", author: "Fielder編集部", translator: "劉姍珊", pages: "144", status: "已出版", link: "https://www.books.com.tw/products/0011008046?sloc=main", image: "", note: "" },
+            { title: "智慧之戰：從《孫子兵法》看現代競爭", role: "責任編輯", author: "守屋洋", translator: "李惠芬", pages: "220", status: "已出版", link: "https://www.books.com.tw/products/0011010548?sloc=main", image: "", note: "" },
+            { title: "極簡埃及史", role: "責任編輯", author: "山崎世理愛", translator: "蔡麗蓉", pages: "221", status: "已出版", link: "https://www.books.com.tw/products/0011010540?sloc=main", image: "", note: "" },
+            { title: "精簡的智慧：打破冗長思維的150個啟發", role: "責任編輯", author: "外山滋比古", translator: "邱佳葳", pages: "183", status: "已出版", link: "https://www.books.com.tw/products/0011014329?sloc=main", image: "", note: "" },
+            { title: "零經驗也能成為一流！策略性思考速成法", role: "責任編輯", author: "古谷昇", translator: "陳聖怡", pages: "239", status: "已出版", link: "https://www.books.com.tw/products/0011014326?sloc=main", image: "", note: "" },
+            { title: "極簡加拿大史", role: "責任編輯", author: "細川道久", translator: "蔡麗蓉", pages: "205", status: "已出版", link: "https://www.books.com.tw/products/0011014333?sloc=main", image: "", note: "" },
+            { title: "漫畫戰略兵法 用兵思想入門 編制篇", role: "責任編輯", author: "田村尚也", translator: "張詠翔", pages: "106", status: "已出版", link: "https://www.books.com.tw/products/0011014334?sloc=main", image: "", note: "" },
+            { title: "職場高手的高效思維", role: "責任編輯", author: "安達裕哉", translator: "李惠芬", pages: "238", status: "已出版", link: "https://www.books.com.tw/products/0011016414?sloc=main", image: "", note: "" },
+            { title: "波動的力量：掌握幸福與成功的祕訣", role: "責任編輯", author: "齋藤一人", translator: "林美琪", pages: "181", status: "已出版", link: "https://www.books.com.tw/products/0011016415?sloc=main", image: "", note: "" },
+            { title: "鋼彈模型完美組裝妙招集：簡單收尾技巧推薦 HG 篇", role: "責任編輯", author: "林哲平", translator: "FORTRESS", pages: "96", status: "已出版", link: "https://www.books.com.tw/products/0011017099?sloc=main", image: "", note: "" },
+            { title: "大腦潛能：7天解鎖最強專注力與生產力", role: "責任編輯", author: "山田梨加", translator: "王綺", pages: "124", status: "已出版", link: "https://www.books.com.tw/products/0011019587?sloc=main", image: "", note: "" },
+            { title: "轉身，就是向陽處", role: "責任編輯", author: "翡翠小太郎", translator: "胡毓華", pages: "246", status: "已出版", link: "https://www.books.com.tw/products/0011019116?sloc=main", image: "", note: "" },
+            { title: "看起來真年輕！日本整型外科醫生教你不顯老的好習慣", role: "責任編輯", author: "糸井由里惠", translator: "龔亭芬", pages: "127", status: "已出版", link: "https://www.books.com.tw/products/0011019120?sloc=main", image: "", note: "" },
+            { title: "【漫畫版】3 小時讀懂《韓非子》", role: "責任編輯", author: "吉田浩", translator: "徐瑜芳", pages: "221", status: "已出版", link: "https://www.books.com.tw/products/0011019516?sloc=main", image: "", note: "" },
+            { title: "故障的大腦：路易氏體失智症患者的世界", role: "責任編輯", author: "樋口直美", translator: "胡毓華", pages: "248", status: "已出版", link: "https://www.books.com.tw/products/0011021350?sloc=main", image: "", note: "" },
+            { title: "照顧好自己就好：61 個解放心靈的技巧", role: "責任編輯", author: "內藤誼人", translator: "曾薏珊", pages: "287", status: "已出版", link: "https://www.books.com.tw/products/0011021354?sloc=main", image: "", note: "" },
+            { title: "提高公司穩定度！先進企業的經濟學運用法", role: "責任編輯", author: "今井誠", translator: "陳聖怡", pages: "271", status: "已出版", link: "https://www.books.com.tw/products/0011021692?sloc=main", image: "", note: "" },
+            { title: "說好話，好會說話！直達人心的好感溝通術", role: "責任編輯", author: "Erasen", translator: "廖玠淩", pages: "192", status: "已出版", link: "https://www.books.com.tw/products/0011024617?sloc=main", image: "", note: "" },
+            { title: "從子彈看戰術轉變", role: "責任編輯", author: "二見龍", translator: "張詠翔", pages: "191", status: "已出版", link: "https://www.books.com.tw/products/0011024582?sloc=main", image: "", note: "" },
+            { title: "手．腳穴位大全：立即舒緩不適症狀！", role: "責任編輯", author: "五十嵐康彥", translator: "龔亭芬", pages: "127", status: "已出版", link: "https://www.books.com.tw/products/0011024452?sloc=main", image: "", note: "" },
+            { title: "凡事取決於「理解力」！瞬間掌握本質的關鍵思維", role: "責任編輯", author: "山口拓朗", translator: "胡毓華", pages: "320", status: "已出版", link: "https://www.books.com.tw/products/0011026619?sloc=main", image: "", note: "" },
+            { title: "決定版3小時看漫畫認識印度", role: "責任編輯", author: "關口真理", translator: "陳聖怡", pages: "190", status: "已出版", link: "https://www.books.com.tw/products/0011026685?sloc=main", image: "", note: "" },
+            { title: "幽默一點，溝通就會順一點", role: "責任編輯", author: "草刈MARTHA", translator: "廖玠淩", pages: "183", status: "已出版", link: "https://www.books.com.tw/products/0011026692?sloc=main", image: "", note: "" },
+            { title: "你想知道的都在這裡！奇幻世界大揭祕", role: "責任編輯", author: "奇幻世界的一切", translator: "趙鴻龍", pages: "128", status: "已出版", link: "https://www.books.com.tw/products/0011027067?sloc=main", image: "", note: "" },
+            { title: "怎麼教都沒用，是不是我的錯？", role: "責任編輯", author: "JOE", translator: "李婉寧", pages: "230", status: "已出版", link: "https://www.books.com.tw/products/0011030499?sloc=main", image: "", note: "" },
+            { title: "潛意識在說話：99% 的人生問題，源自沒察覺的思考", role: "責任編輯", author: "宮增侑嬉", translator: "林農凱", pages: "198", status: "已出版", link: "https://www.books.com.tw/products/0011030500?sloc=main", image: "", note: "" },
+            { title: "從20位名人看懂世界史的基礎", role: "責任編輯", author: "山本直人", translator: "陳聖怡", pages: "223", status: "已出版", link: "https://www.books.com.tw/products/0011029605?sloc=main", image: "", note: "" },
+            { title: "重新設定：從潛意識開始，讓改變不再半途而廢", role: "責任編輯", author: "井上裕之", translator: "林美琪", pages: "251", status: "已出版", link: "https://www.books.com.tw/products/0011033140?sloc=main", image: "", note: "" },
+            { title: "首先，好好地聆聽：真正理解「溝通」的對話技巧", role: "責任編輯", author: "櫻井將", translator: "胡毓華", pages: "318", status: "已出版", link: "https://www.books.com.tw/products/0011034886?sloc=main", image: "", note: "" },
+            { title: "今天也吃鍋吧！56 道超簡單小鍋料理", role: "責任編輯", author: "重信初江", translator: "邱佳葳", pages: "127", status: "已出版", link: "https://www.books.com.tw/products/0011032489?sloc=main", image: "", note: "" },
+            { title: "不用忍耐的瘦身法", role: "責任編輯", author: "野上浩一郎", translator: "李依珊", pages: "159", status: "已出版", link: "https://www.books.com.tw/products/0011035193?sloc=main", image: "", note: "" },
+            { title: "專注的力量：放對焦點，放大幸福", role: "責任編輯", author: "BAZZI", translator: "沈俊傑", pages: "207", status: "已出版", link: "https://www.books.com.tw/products/0011036034?sloc=main", image: "", note: "" },
+            { title: "從此擺脫加班人生！化繁為簡的30分鐘工作法", role: "責任編輯", author: "瀧川徹", translator: "廖玠淩", pages: "253", status: "已出版", link: "https://www.books.com.tw/products/0011036037?sloc=main", image: "", note: "" },
+            { title: "塔羅解牌研究所4", role: "責任編輯", author: "LUA", translator: "曾玟閎", pages: "191", status: "已出版", link: "https://www.books.com.tw/products/0011035235?sloc=main", image: "", note: "" },
+            { title: "雞胸肉✕綠花椰菜 最強吃法", role: "責任編輯", author: "堀口泰子", translator: "邱佳葳", pages: "79", status: "已出版", link: "https://www.books.com.tw/products/0011037536?loc=P_0005_015", image: "", note: "" },
+            { title: "培養精神醫學常識：理解精神疾病，理解自己", role: "責任編輯", author: "松崎朝樹", translator: "龔亭芬", pages: "269", status: "已出版", link: "https://www.books.com.tw/products/0011037500?sloc=main", image: "", note: "" },
+            { title: "1 小時讀懂星盤", role: "責任編輯", author: "Daiki", translator: "李婉寧", pages: "191", status: "已出版", link: "https://www.books.com.tw/products/0011038396?sloc=main", image: "", note: "" },
+            { title: "大人占星學：中年之後的覺醒指引", role: "責任編輯", author: "miraimiku", translator: "趙鴻龍", pages: "159", status: "已出版", link: "https://www.books.com.tw/products/0011039871?sloc=main", image: "", note: "" },
+            { title: "別讓情緒耽誤你", role: "責任編輯", author: "岩本元熙", translator: "沈俊傑", pages: "197", status: "已出版", link: "https://www.books.com.tw/products/0011040819?sloc=main", image: "", note: "" },
+            { title: "理解的本質", role: "責任編輯", author: "西林克彥", translator: "邱心柔", pages: "215", status: "已出版", link: "https://www.books.com.tw/products/0011039934?sloc=main", image: "", note: "" },
+            { title: "【漫畫版】就算失調也沒關係！", role: "責任編輯", author: "小林弘幸", translator: "劉姍珊", pages: "158", status: "已出版", link: "https://www.books.com.tw/products/0011042758?sloc=main", image: "", note: "" },
+            { title: "時間與金錢的祕密", role: "責任編輯", author: "佐野直樹", translator: "趙鴻龍", pages: "279", status: "已出版", link: "https://www.books.com.tw/products/0011042664?sloc=main", image: "", note: "" },
+            { title: "被遺棄的我與貓", role: "責任編輯", author: "船山哲", translator: "廖玠淩", pages: "156", status: "已出版", link: "https://www.books.com.tw/products/0011042666?sloc=main", image: "", note: "" },
+            { title: "翻轉人生的七大習慣", role: "責任編輯", author: "高橋宏和", translator: "許郁文", pages: "214", status: "已出版", link: "https://www.books.com.tw/products/0011042698?sloc=main", image: "", note: "" },
+            { title: "見個面，說說話", role: "責任編輯", author: "田中泰延", translator: "胡毓華", pages: "265", status: "執行中", link: "#", image: "", note: "" },
+            { title: "嗅覺覺醒", role: "責任編輯", author: "齊藤帆乃花", translator: "鄭秉慈", pages: "189", status: "執行中", link: "#", image: "", note: "" }
+        ];
+
+        // --- 自動產生卡片函數 ---
+        const grid = document.getElementById('book-grid');
+        const modalBody = document.getElementById('modal-body');
+        const modal = document.getElementById('modal-overlay');
+
+        function renderBooks() {
+            grid.innerHTML = '';
+            books.forEach((book, index) => {
+                // 1. 產生卡片 HTML
+                const card = document.createElement('div');
+                card.className = 'card';
+                // 使用假圖服務，若您填入真實圖片路徑則顯示您的圖
+                const imgUrl = book.image ? book.image : `https://placehold.co/400x560/eaddcf/463f3a?text=${encodeURIComponent(book.title.substring(0,4))}`;
+                
+                card.innerHTML = `
+                    <div class="card-img-container">
+                        <img src="${imgUrl}" alt="${book.title}" class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <span class="card-tag">${book.role} · ${book.status}</span>
+                        <h3 class="card-title">${book.title}</h3>
+                        <p class="card-desc">作者：${book.author}</p>
+                    </div>
+                `;
+                card.onclick = () => openModal(index);
+                grid.appendChild(card);
+            });
         }
 
-        // 關閉視窗
-        function closeModal(id) {
-            document.getElementById(id).style.display = "none";
-            document.body.style.overflow = "auto"; // 恢復背景滾動
+        // --- 燈箱控制 ---
+        function openModal(index) {
+            const book = books[index];
+            const imgUrl = book.image ? book.image : `https://placehold.co/400x560/eaddcf/463f3a?text=${encodeURIComponent(book.title.substring(0,4))}`;
+            
+            // 處理空值顯示
+            const noteHtml = book.note ? `<p><strong>備註：</strong>${book.note}</p>` : '';
+            const linkHtml = book.link && book.link !== '#' ? `<a href="${book.link}" target="_blank" class="action-btn">查看博客來頁面 ➜</a>` : '';
+
+            modalBody.innerHTML = `
+                <div>
+                    <img src="${imgUrl}" alt="${book.title}" class="detail-img">
+                </div>
+                <div>
+                    <span class="card-tag" style="font-size:1rem; margin-bottom:10px;">${book.role}</span>
+                    <h2 style="margin: 0 0 20px 0; color: var(--primary-text);">${book.title}</h2>
+                    
+                    <div class="meta-info">
+                        <span><strong>作者：</strong>${book.author}</span>
+                        <span><strong>譯者：</strong>${book.translator}</span>
+                        <span><strong>頁數：</strong>${book.pages} 頁</span>
+                    </div>
+
+                    <div style="line-height: 1.8;">
+                        <p><strong>專案狀態：</strong>${book.status}</p>
+                        ${noteHtml}
+                        <p>（此處可撰寫更多關於這本書的編輯心得...）</p>
+                    </div>
+
+                    ${linkHtml}
+                </div>
+            `;
+            
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
         }
 
-        // 點擊視窗外部也能關閉
+        function closeModal() {
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        // 點擊背景關閉
         window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = "none";
-                document.body.style.overflow = "auto";
+            if (event.target == modal) {
+                closeModal();
             }
         }
+
+        // 初始化
+        renderBooks();
     </script>
 </body>
 </html>
